@@ -1,0 +1,2 @@
+New content from JavaScript.
+even more lines of text.
