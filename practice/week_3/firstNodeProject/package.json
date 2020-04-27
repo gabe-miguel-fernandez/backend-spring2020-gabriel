@@ -1,0 +1,14 @@
+{
+  "name": "firstnodeproject",
+  "version": "1.0.0",
+  "description": "Practicing using NPM.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gabriel Fernandez",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^4.17.15"
+  }
+}

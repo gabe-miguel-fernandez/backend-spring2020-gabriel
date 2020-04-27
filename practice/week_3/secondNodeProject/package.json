@@ -1,0 +1,14 @@
+{
+  "name": "secondnodeproject",
+  "version": "1.0.0",
+  "description": "Practicing using NPM again",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gabriel Fernandez",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
