@@ -1,87 +1,102 @@
-<!doctype html>
+<!DOCTYPE html>
 
 <html lang="en">
-<head>
-  <meta charset="utf-8">
+  <head>
+    <meta charset="utf-8" />
 
-  <title>Test Page</title>
-  <meta name="description" content="The server test page">
-  <meta name="author" content="something">
+    <title>Test Page</title>
+    <meta name="description" content="The server test page" />
+    <meta name="author" content="something" />
 
-
-
-  <style>
+    <style>
       # {
         font-family: Arial, Helvetica, sans-serif;
       }
       body {
-          
-          font-size: 36px;
+        font-size: 36px;
       }
       input {
-          font-size: 36px;
+        font-size: 36px;
       }
       button {
-          font-size: 36px;
+        font-size: 36px;
       }
-  </style>
+    </style>
 
-<script src="https://code.jquery.com/jquery-3.5.0.min.js" integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.5.0.min.js"
+      integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ="
+      crossorigin="anonymous"
+    ></script>
+  </head>
 
-</head>
-
-<body>
-  <form>
-    <label for="age">Enter your age</label><br />
-    <input type="text" id="age" />
-  </form>
+  <body>
+    <form>
+      <label for="age">Enter your age</label><br />
+      <input type="text" id="age" /><br />
+      <label for="name">Enter your name</label><br />
+      <input type="text" id="name" />
+    </form>
 
     <button id="submit">Submit age to server</button>
 
     <div id="message"></div>
 
     <script>
-        // Code after this is JavaScript
-        console.log("Hello");
-        // when the "document" which is the html code is ready, then
-        // run the function provided inside the ready function. This
-        // esnures jQuery waits until the web page is ready.
-        $(document).ready(() => {
+      // Code after this is JavaScript
+      console.log("Hello");
+      // when the "document" which is the html code is ready, then
+      // run the function provided inside the ready function. This
+      // esnures jQuery waits until the web page is ready.
+      $(document).ready(() => {
+        console.log("jQuery is working.");
 
-            console.log("jQuery is working.");
+        // select the submit button and attach handler/listener
+        $("#submit").click(() => {
+          // get value of text box and store it in ageValue variable
+          let ageValue = $("#age").val();
+          let nameValue = $("#name").val();
 
-            // select the submit button and attach handler/listener
-            $("#submit").click(() => {
+          console.log(`ageValue = ${ageValue}`);
+          console.log(`nameValue = ${nameValue}`);
 
-                // get value of text box and store it in ageValue variable
-                let ageValue = $("#age").val();
-                console.log(`ageValue = ${ageValue}`);
+          // test input for valid number
+          ageValue = parseInt(ageValue);
+          console.log(`int ageValue = ${ageValue}`);
 
-                // console.log("The value for age is " + age Value);
-                let dataObject = {
-                    "age": ageValue
+          if (ageValue > 0) {
+            // console.log("The value for age is " + age Value);
+            let dataObject = {
+              age: ageValue,
+              name: nameValue,
+            };
+            console.log(dataObject);
+            // 1st argument: where to send it to; 2nd argument is what to send;
+            // 3rd argument is what to do when the server has responded
+            $.post(
+              "http://localhost:3000/submitAge",
+              dataObject,
+              (dataFromServer) => {
+                console.log(dataFromServer);
+
+                if (dataFromServer.canDrink) {
+                  $("#message").html("<p>Congrats, go have a soda!</p>");
+                } else {
+                  $("#message").html("<p>No soda for you!</p>");
+                  // .append just adds to the existing notes
+                  // $("#message").append("<p>No soda for you!</p>");
                 }
-
-                // 1st argument: where to send it to; 2nd argument is what to send;
-                // 3rd argument is what to do when the server has responded
-                $.post("http://localhost:3000/submitAge", dataObject, (dataFromServer) => {
-                    console.log(dataFromServer);
-
-                    if (dataFromServer.canDrink) {
-                        $("#message").html("<p>Congrats, go have a soda!</p>");
-                    } else {
-                        $("#message").html("<p>No soda for you!</p>");
-                        // .append just adds to the existing notes
-                        // $("#message").append("<p>No soda for you!</p>");
-                    }
-                });
-            });
-
+              }
+            );
+          } else {
+            $("#message").html("That number is not a valid age.");
+          }
         });
+      });
 
-        // Code before this is JavaScript
+      // Code before this is JavaScript
     </script>
-</body>
+  </body>
 </html>
 
 <!--
