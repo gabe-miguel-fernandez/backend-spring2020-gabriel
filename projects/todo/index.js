@@ -49,6 +49,23 @@ app.use("/", express.static("public_html/"));
     {
       saveStatus: Number (0 for saved, 1 for error)
     }
+    Object to receive from front-end for /readNotes
+    {
+
+    }
+    Object to send to front-end for /readNotes
+    {
+      notes: Array
+    }
+    Object to receive from front-end for /deleteNote
+    {
+      create_date: Number,
+      author: String
+    }
+    Object to send to front-end for /deleteNote
+    {
+      deleteStatus: Number (0 for successful deletion, 1 for not found, 2 for found but not deleted)
+    }
  */
 
  class Note {
@@ -68,12 +85,60 @@ app.post("/newNote", (request, response) => {
 
   data.notes.push(newNoteObject);
 
+  // save data to file
+  let converted = JSON.stringify(data);
+  fs.writeFileSync(filename, converted, "utf8");
+
   let dataToSend = {
     saveStatus: 0
   }
 
-  console.log(data);
+  // console.log(data);
 
   response.send(dataToSend);
+  // alternative way to send status
+  // response.sendStatus(200);
 
+});
+
+// route for updating a specific note
+
+// route for deleting a specific note
+app.post("/deleteNote", (req, res) => {
+  let noteToDelete = req.body;
+
+  let noteID = noteToDelete.create_date + noteToDelete.author;
+
+  for (let i = 0; i < data.notes.length; i++) {
+    let currentNote = data.notes[i];
+    let currentNoteID = currentNote.create_date + currentNote.author;
+
+    if (node === currentNoteID) {
+      data.notes.splice(i, 1);
+
+      // save data to file
+      let converted = JSON.stringify(data);
+      fs.writeFileSync(filename, converted, "utf8");
+
+      let dataToSend = {
+        deleteStatus: 0
+      }
+
+      res.send(dataToSend);
+      return; // exits the for loop and stops the function
+
+    }
+  }
+
+  let dataToSend = {
+    deleteStatus: 1
+  }
+
+  res.send(dataToSend);
+
+});
+
+// route for reading all notes
+app.post("/readNotes", (req, res) => {
+  res.send(data);
 });
