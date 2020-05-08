@@ -1,0 +1,11 @@
+TO DO LIST SPECIFICATIONS
+
+OVERVIEW
+
+My "To Do List" project is influenced by the Microsoft To Do app (https://www.microsoft.com/en-us/microsoft-365/microsoft-to-do-list-app) and the traditional yellow writing pad with horizontal lines. I like how the Microsoft To Do app has a plain UI that displays a simple list of tasks. I also like the simplicity of jotting down a "to do" task on a writing pad and then checking it off when it's done. 
+
+APPEARANCE
+
+
+FEATURES
+
