@@ -66,6 +66,31 @@ app.use("/", express.static("public_html/"));
     {
       deleteStatus: Number (0 for successful deletion, 1 for not found, 2 for found but not deleted)
     }
+
+    The /update Note route allows the front-end to send information to the
+    back-end to change the note string of a specified note
+
+    Object to send back for /updateNote
+    {
+      updated_note: String
+      create_date: Number,
+      author: String
+    }
+
+    Object to send to the front-end for /updateNote
+    {
+      updatedStatus: Number (0 if found, 1 if not found, 2 if found but not updated)
+      author: String
+    }
+
+    The /markComplete route sets a specific note to completed status, it
+    should return confirmation of the request
+
+    Object to send to back-end for /markComplete
+    {
+      create_date: Number,
+      author: String
+    }
  */
 
  class Note {
@@ -137,6 +162,89 @@ app.post("/deleteNote", (req, res) => {
   res.send(dataToSend);
 
 });
+
+
+app.post("/updateNote", (req, res) => {
+  let noteToUpdate = req.body;
+
+  const noteToUpdateID = req.body.create_date + req.body.author;
+
+  console.log(noteToUpdate);
+
+  for (let i = 0; i < data.notes.length; i++) {
+    // referring to object; not copying object
+    // TO DO: study "deep copy" vs "shallow copy"
+    let currentNote = data.notes[i];
+    const currentNoteID = currentNote.create_date + currentNote.author;
+    console.log(i + ": " + currentNote, currentNoteID);
+
+    if (noteToUpdateID === currentNoteID)  {
+      currentNote.note = noteToUpdate.updated_note;
+
+      // save data object to json file
+      let converted = JSON.stringify(data);
+      fs.writeFileSync(filename, converted, "utf8");
+
+      const dataToSend = {
+        updatedStatus: 0
+      }
+
+      return;
+    } else {
+      continue;
+    }
+  }
+
+  const dataToSend = {
+    updateStatus: 1
+  }
+
+  res.send(dataToSend);
+
+});
+
+
+// route for deleting a specific note
+app.post("/markComplete", (req, res) => {
+  let noteToComplete = req.body;
+
+  let noteID = noteToComplete.create_date + noteToComplete.author;
+
+  for (let i = 0; i < data.notes.length; i++) {
+    let currentNote = data.notes[i];
+    let currentNoteID = currentNote.create_date + currentNote.author;
+
+    if (noteID === currentNoteID) {
+      data.notes[i].completed_status = true;
+
+      // save data to file
+      let converted = JSON.stringify(data);
+      fs.writeFileSync(filename, converted, "utf8");
+
+      let dataToSend = {
+        markedComplete: 0
+      }
+
+      res.send(dataToSend);
+      return; // exits the for loop and stops the function
+
+    }
+  }
+
+  let dataToSend = {
+    markedComplete: 1
+  }
+
+  res.send(dataToSend);
+
+});
+
+
+
+
+
+
+
 
 // route for reading all notes
 app.post("/readNotes", (req, res) => {

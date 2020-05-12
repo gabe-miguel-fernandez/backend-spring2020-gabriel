@@ -9,6 +9,36 @@
     <meta name="author" content="Gabriel Fernandez" />
 
     <style>
+      body {
+        background-color: gold;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      header {
+        align-items: center;
+        background-color: black;
+        color: white;
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-around;
+        padding: 5px;
+      }
+      #header-title {
+        font-size: xx-large;
+      }
+      #header-filter-label {
+        text-align: right;
+      }
+      #header-filter-buttons {
+        
+      }
+      .btn-group-filter {
+        background-color: white;
+        border: 1px solid black;
+        color: black;
+        float: left;
+        width: 33%;
+      }
+
     </style>
 
     <!-- Use internet to get jQuery file to run in web page. -->
@@ -20,17 +50,44 @@
   </head>
 
   <body>
+    <header>
+      <div id="header-title">TO DO LIST</div>
+      <div id="header-filter">
+        <div id="header-filter-label">Filter by Status</div>
+        <div class="btn-group-filter" id="header-filter-buttons">
+            <input type="button" id="all" name="status" value="All">
+            <input type="button" id="not-done" name="status" value="Not Done">
+            <input type="button" id="done" name="status" value="Done">
+        </div>  
+      </div>
+    </header>
 
     <script>
       $(document).ready(() => {
 
         let objectToSend = {
-          note: "Do something",
-          author: "Nick"
-        }
-        $.post("http://localhost:3000/newNote", objectToSend, (dataToGet) => {
-          console.log(dataToGet);
-        })
+          // updated_note: "Do something completely new",
+          author: "Nick",
+          create_date: 1588990377480
+        };
+
+        console.log("STATUS: document loaded.")
+
+        $.post("http://localhost:3000/markComplete", objectToSend, (dataToGet) => {
+          console.log(`Server says ${dataToGet.markedComplete}`);
+        });
+
+        // $.post("http://localhost:3000/newNote", objectToSend, (dataToGet) => {
+        //   console.log(dataToGet);
+        // })
+        // $.post("http://localhost:3000/readNotes", {}, (dataToGet) => {
+        //   let allNotesArray = dataToGet.notes;
+        //   console.log(allNotesArray);
+        // })
+        // $.post("http://localhost:3000/updateNote", objectToSend, (dataToGet) => {
+        //   console.log(`Server says ${dataToGet.updatedStatus}`);
+        // });
+
       });
     </script>
   </body>

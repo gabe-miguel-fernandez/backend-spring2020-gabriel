@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+
+    <title>ToDo App</title>
+    <meta name="description" content="The To Do app page" />
+    <meta name="author" content="Gabriel Fernandez" />
+
+    <style>
+      body {
+        background-color: gold;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+      header {
+        align-items: center;
+        background-color: black;
+        color: white;
+        display: flex;
+        flex-flow: row;
+        justify-content: space-between;
+        padding: 5px;
+      }
+      #header-title {
+        font-size: xx-large;
+        flex-flow: row;
+        padding-left: 15px;
+      }
+
+      #header-filter {
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+      }
+
+      #header-filter-label {
+        font-size: large;
+        padding: 10px;
+        align-items: right;
+      }
+
+      #header-filter-buttons {
+        /*
+        justify-content: space-evenly;
+        align-items: stretch;
+        */
+      }
+
+      #all, #not-done, #done {
+        width: 70px;
+      }
+
+      .btn-group-filter {
+        border: 1px solid black;
+        color: black;
+        font-size: 24px;
+        padding: 20px;
+      }
+
+      #newNote {
+        /*
+        vertical-align: center;
+        */
+        background-color: white;
+        border: 1px solid black;
+        box-sizing: border-box;
+        margin: 5px 0px 0px 0px;
+        padding: 3px;
+        align-items: center;
+        
+      }
+
+      #newNoteText {
+        border: 0px solid white;
+        font-size: x-large;
+        width: 80%;
+      }
+
+      .note {
+        display: flex;
+        flex-direction: row;
+        border: 3px solid black;
+      }
+
+      .note-buttons {
+        align-items: center;
+        background-color: darkcyan;
+        padding: 30px 0;
+        text-align: center;
+      }
+
+      .note-data {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .note-text {
+        background-color: cornflowerblue;
+      
+        padding: 0px 20px 0px 20px;
+      }
+
+      .note-timestamp {
+        background-color: coral;
+        border: 5px;
+        
+        padding-left: 20px;
+      }
+
+      hr {
+        color: black;
+        size: 36px;
+      }
+
+    </style>
+
+    <!-- Use internet to get jQuery file to run in web page. -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.0.min.js"
+      integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+
+  <body>
+    <header>
+      <div id="header-title"><p>TO DO LIST</p></div>
+      <div id="header-filter">
+        <div id="header-filter-label"><p>Filter by Status</p></div>
+        <div class="btn-group-filter" id="header-filter-buttons">
+            <input type="button" id="all" name="status" value="All">
+            <input type="button" id="not-done" name="status" value="Not Done">
+            <input type="button" id="done" name="status" value="Done">
+        </div>  
+      </div>
+    </header>
+    <section id="new-note">
+      <div id="newNote">
+        <form action="" method="put">
+          <input type="submit" value="addNote">
+          <input type="text" id="newNoteText" value="Here text for new task here.">
+        </form>
+      </div>
+    </section>
+    <hr>
+    <section id="todo-list">
+
+      <div class="note" id="timestamp2-user1">
+        <div class="note-buttons">
+          <button>Done</button><br>
+          <button>Edit</button><br>
+          <button>Delete</button>
+        </div>
+        <div class="note-data">
+          <div class="note-text">
+            <p>This is sample note text that displays to illustrate how actual text will display. This is sample note text that displays to illustrate how actual text will display. This is sample note text that displays to illustrate how actual text will display.</p>
+          </div>
+          <div class="note-timestamp">
+            <p><b>Date Created: </b>20 Dec 2021 12:12:1234</p>
+          </div>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="note" id="timestamp3-user1">
+        <div class="note-buttons">
+          <button>Done</button><br>
+          <button>Edit</button><br>
+          <button>Delete</button>
+        </div>
+        <div class="note-data">
+          <div class="note-text">
+            <p>This is sample note text that displays to illustrate how actual text will display. This is sample note text that displays to illustrate how actual text will display. This is sample note text that displays to illustrate how actual text will display.</p>
+          </div>
+          <div class="note-timestamp">
+            <p><b>Date Created: </b>21 Dec 2021 13:13:1234</p>
+          </div>
+        </div>
+
+        <hr>
+
+    </section>
+
+    <script>
+      $(document).ready(() => {
+
+        let objectToSend = {
+          note: "Do something",
+          author: "Nick"
+        }
+        $.post("http://localhost:3000/newNote", objectToSend, (dataToGet) => {
+          console.log(dataToGet);
+        })
+      });
+    </script>
+  </body>
+</html>
