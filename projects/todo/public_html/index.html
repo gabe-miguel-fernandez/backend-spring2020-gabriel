@@ -8,35 +8,116 @@
     <meta name="description" content="The To Do app page" />
     <meta name="author" content="Gabriel Fernandez" />
 
+    <!-- <link rel="stylesheet" type="text/css" href="styles/reset.css">
+    <link rel="stylesheet" type="text/css" href="styles/all.min.css">
+    <link rel="stylesheet" type="text/css" href="styles/styles.css"> -->
+
     <style>
+
       body {
         background-color: gold;
         font-family: Arial, Helvetica, sans-serif;
       }
+
       header {
         align-items: center;
         background-color: black;
         color: white;
         display: flex;
-        flex-flow: row wrap;
-        justify-content: space-around;
+        flex-flow: row;
+        justify-content: space-between;
         padding: 5px;
       }
+
       #header-title {
         font-size: xx-large;
+        flex-flow: row;
+        padding: 0 5px 0 15px;
       }
+
+      #header-filter {
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+      }
+
       #header-filter-label {
-        text-align: right;
+        align-items: right;
+        font-size: large;
+        padding: 8px 8px 0 0;
       }
+
       #header-filter-buttons {
-        
+        padding: 0px 10px 5px 0;
       }
+
+      #all, #not-done, #done {
+        background-color: whitesmoke;
+        border-radius: 3px;
+        font-size: medium;
+        font-weight: bold;
+        width: 90px;
+      }
+
       .btn-group-filter {
-        background-color: white;
         border: 1px solid black;
         color: black;
-        float: left;
-        width: 33%;
+        font-size: 24px;
+        font-weight: bold;
+        padding: 20px 0 0 0;
+      }
+
+      #newNote {
+        background-color: white;
+        border: 1px solid black;
+        box-sizing: border-box;
+        margin: 5px 0px 0px 0px;
+        padding: 3px;
+        
+        
+      }
+
+      #newNoteText {
+        border: 0px solid white;
+        font-size: x-large;
+        width: 80%;
+      }
+
+      .note {
+        display: flex;
+        flex-direction: row;
+        border: 3px solid black;
+      }
+
+      .note-buttons {
+        align-items: center;
+        background-color: darkcyan;
+        padding: 30px 0;
+        text-align: center;
+      }
+
+      .note-data {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .note-text {
+        background-color: cornflowerblue;
+        height: 80%;
+        padding: 0px 0px 0px 20px;
+      }
+
+      .note-timestamp {
+        background-color: coral;
+        border: 5px;
+        
+        padding-left: 20px;
+      }
+
+      hr {
+        color: black;
+        size: 36px;
       }
 
     </style>
@@ -62,6 +143,18 @@
       </div>
     </header>
 
+    <section id="new-note">
+      <div id="newNote">
+        <form action="" method="put">
+          <input type="submit" value="addNote">
+          <input type="text" id="newNoteText" value="Here text for new task here.">
+        </form>
+      </div>
+      <hr>
+    </section>
+    <section id="note-list">
+    </section>
+
     <script>
       $(document).ready(() => {
 
@@ -73,9 +166,112 @@
 
         console.log("STATUS: document loaded.")
 
-        $.post("http://localhost:3000/markComplete", objectToSend, (dataToGet) => {
-          console.log(`Server says ${dataToGet.markedComplete}`);
+
+            // filter To Do items
+        let filterButtons = $(":button");
+        console.log(filterButtons);
+        
+        filterButtons.click(() => {
+          filterButtons.css("background-color", "yellow");
+          filterButtons.css("color", "red");
+          alert(event.srcElement.id);
+          let statusToView = event.srcElement.id;
+          // get any existing notes/tasks
+          let allNotesArray;
+          
+
+          $.post("http://localhost:3000/readNotes", {}, (dataToGet) => {
+            allNotesArray = dataToGet.notes;
+            console.log("Requested notes data.");
+            console.log("type of = " + typeof allNotesArray);
+            console.log("count of array = " + allNotesArray.length);
+
+            $("#note-list").empty();
+
+            let myCount = 0;
+
+            for (let i = 0; i < allNotesArray.length; i++) {
+              
+              console.log(allNotesArray[i]);
+              let ts = new Date(allNotesArray[i].create_date);
+              let tstamp = allNotesArray[i].create_date;
+              let user = allNotesArray[i].author;
+              let noteStatus = (allNotesArray[i].completed_status ? "Done" : "Incomplete");
+              // noteStatus = allNotesArray[i].completed_status;
+              let formattedTask = 
+              `<div class="note" id="${tstamp}-${user}">
+                <div class="note-buttons">
+                  <button>Done</button><br>
+                  <button>Edit</button><br>
+                  <button>Delete</button>
+                </div>
+                <div class="note-data">
+                  <div class="note-text">
+                    <p>${allNotesArray[i].note}</p>
+                  </div>
+                  <div class="note-timestamp">
+                    <p><b>Date Created: </b>${ts.toLocaleString()} (STATUS: ${noteStatus})</p>
+                  </div>
+                </div>
+              </div>
+              <hr>`;
+              
+              /*
+                if button === done && note.completed_status === true,
+                then append task
+                else if button = not-done && note.completed_status === false,
+                then append task
+                else 
+                append task
+              */
+              // $("#note-list").append(formattedTask);
+              console.log("status to view = " + statusToView);
+              console.log("note status = " + noteStatus);
+              console.log(noteStatus);
+              if (statusToView == "all") {
+                console.log("noteStatus = " + noteStatus);
+                console.log("Added to all list");
+                $("#note-list").append(formattedTask);
+                myCount++;
+              } else if (statusToView === "done") {
+                if (noteStatus == "Done") {
+                  console.log("noteStatus = " + noteStatus);
+                  console.log("Added to done list");
+                  $("#note-list").append(formattedTask);
+                  // $("body").append(formattedTask);
+                  myCount++;
+                }
+              } else if (statusToView === "not-done") {
+                if (noteStatus == "Incomplete") {
+                  console.log("noteStatus = " + noteStatus);
+                  console.log("Added to incomplete list");
+                  $("#note-list").append(formattedTask);
+                  myCount++;
+                }
+              }
+              // } else {
+              //   console.log("noteStatus = " + noteStatus);
+              //   console.log("Added to all list");
+              //   $("#note-list").append(formattedTask);
+              // }
+              //$("body").append(JSON.stringify(allNotesArray[i]));
+              
+            };
+            $("#note-list").prepend(`Found ${myCount} task(s).`);
+          });
+          
+          // $("#note-list").empty();
+          // $("body").append(allNotesArray);
+          // console.log(allNotesArray);
+
+          // let aPTag = "<p>This is a paragraph tag.</>"
+          // .html, .append or .prepend
+          // $("body").append(aPTag);
         });
+
+        // $.post("http://localhost:3000/markComplete", objectToSend, (dataToGet) => {
+        //   console.log(`Server says ${dataToGet.markedComplete}`);
+        // });
 
         // $.post("http://localhost:3000/newNote", objectToSend, (dataToGet) => {
         //   console.log(dataToGet);
