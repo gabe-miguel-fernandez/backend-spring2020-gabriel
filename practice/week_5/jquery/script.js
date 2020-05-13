@@ -36,6 +36,18 @@ $(document).ready(() => {
     console.log(myHeading[0]);
     myHeading.css("color", "red");
 
+    // filter To Do items
+    let filterButtons = $(":button");
+    console.log(filterButtons);
+    filterButtons.click(() => {
+        filterButtons[0].css("background-color", "yellow");
+        filterButtons[0].css("color", "red");
+
+        let aPTag = "<p>This is a paragraph tag.</>"
+        // .html, .append or .prepend
+        $("body").append(aPTag);
+    });
+
     // waiting 5 seconds to change color for all headings to green
     // setInterval(() => {
     //     myHeading.css("color", "green");
