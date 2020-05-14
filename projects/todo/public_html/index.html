@@ -136,9 +136,9 @@
       <div id="header-filter">
         <div id="header-filter-label">Filter by Status</div>
         <div class="btn-group-filter" id="header-filter-buttons">
-            <input type="button" id="all" name="status" value="All">
-            <input type="button" id="not-done" name="status" value="Not Done">
-            <input type="button" id="done" name="status" value="Done">
+            <input type="button" id="all" class="filterBtn" name="status" value="All">
+            <input type="button" id="not-done" class="filterBtn" name="status" value="Not Done">
+            <input type="button" id="done" class="filterBtn" name="status" value="Done">
         </div>  
       </div>
     </header>
@@ -156,25 +156,100 @@
     </section>
 
     <script>
+        function deleteTask(tstamp) {
+          console.log(tstamp);
+          let objectToDelete = {
+            author: "Nick",
+            create_date: tstamp
+          };
+          console.log(objectToDelete);
+          $.post("http://localhost:3000/deleteNote", objectToDelete, (dataToGet) => {
+            console.log(`Server says ${dataToGet}`);
+          });
+          const noteDate = new Date(tstamp);
+          createdDate = noteDate.toLocaleDateString();
+          alert("delete - found item id = " + tstamp);
+          $("#note-list").empty();
+          $("#note-list").prepend(`Deleted task that was created on ${createdDate}. Click one of the above filter buttons to see current To Do list.`);
+        }
+
+        function doneTask(id) {
+          alert("done - found item id = " + id);
+        }
+
+        function editTask(id) {
+          alert("edit - found item id = " + id);
+        }
+
+
+
+
       $(document).ready(() => {
 
-        let objectToSend = {
-          // updated_note: "Do something completely new",
-          author: "Nick",
-          create_date: 1588990377480
-        };
+        // let objectToSend = {
+        //   // updated_note: "Do something completely new",
+        //   author: "Nick",
+        //   create_date: 1588990377480
+        // };
 
         console.log("STATUS: document loaded.")
 
 
-            // filter To Do items
-        let filterButtons = $(":button");
+        // figure out how to deal with button clicks
+
+        // $(".deleteBtn").click(function() {
+        //   alert("I've been clicked.");
+        //   // alert(this.author);
+        //   // alert(this.id);
+        //   // alert(obj.id);
+        //   // alert(obj.author);
+        // });
+        // filter To Do items
+        // let filterButtons = $(":button");
+        let filterButtons = $(":button.filterBtn");
         console.log(filterButtons);
+
+        let deleteButtons;
         
+
+        let doneButtons;
+        
+        
+        let editButtons;
+        
+        // function deleteTask(tsAndAuthor) {
+        //   // alert("delete - found item  = " + id + ", " + author);
+        //   alert(tsAndAuthor);
+        //   let str = tsAndAuthor.split("-");
+        //   alert(str);
+        //   console.log(str[0] + ", " + str[1]);
+        //   // let objectToDelete = {
+        //   //   author: `${author}`,
+        //   //   create_date: ts
+        //   // };
+        //   // $.post("http://localhost:3000/deleteNote", objectToDelete, (dataToGet) => {
+        //   //   console.log(`Server says ${dataToGet.markedComplete}`);
+        //   // });
+        // }
+
+        // function doneTask(id) {
+        //   alert("done - found item id = " + id);
+        // }
+
+        // function editTask(id) {
+        //   alert("edit - found item id = " + id);
+        // }
+
+
         filterButtons.click(() => {
           filterButtons.css("background-color", "yellow");
           filterButtons.css("color", "red");
-          alert(event.srcElement.id);
+          console.log(event.srcElement);
+          // alert(event.srcElement/*  */.id);
+          // alert(event.srcElement.class);
+          // alert(event.srcElement.className);
+          // alert(event.srcElement.name);
+          alert("id = " + event.srcElement.id + ", class = " + event.srcElement.className);
           let statusToView = event.srcElement.id;
           // get any existing notes/tasks
           let allNotesArray;
@@ -188,22 +263,24 @@
 
             $("#note-list").empty();
 
-            let myCount = 0;
+            let taskCount = 0;
 
             for (let i = 0; i < allNotesArray.length; i++) {
               
               console.log(allNotesArray[i]);
               let ts = new Date(allNotesArray[i].create_date);
+              let myNote = allNotesArray[i];
               let tstamp = allNotesArray[i].create_date;
               let user = allNotesArray[i].author;
+              let deleteInfo = tstamp + "," + user;
               let noteStatus = (allNotesArray[i].completed_status ? "Done" : "Incomplete");
               // noteStatus = allNotesArray[i].completed_status;
               let formattedTask = 
-              `<div class="note" id="${tstamp}-${user}">
+              `<div class="note" id="${tstamp}">
                 <div class="note-buttons">
-                  <button>Done</button><br>
-                  <button>Edit</button><br>
-                  <button>Delete</button>
+                  <button id="${tstamp}" author="${user}" class="doneBtn" name="done" value="Done" onClick="doneTask(${tstamp});">Done</button><br>
+                  <button id="${tstamp}" author="${user}" class="editBtn" name="edit" value="Edit" onClick="editTask(${user});">Edit</button><br>
+                  <button id="${tstamp}" author="${user}" class="deleteBtn" name="delete" value="Delete" onClick="deleteTask(${tstamp});">Delete</button>
                 </div>
                 <div class="note-data">
                   <div class="note-text">
@@ -228,36 +305,39 @@
               console.log("status to view = " + statusToView);
               console.log("note status = " + noteStatus);
               console.log(noteStatus);
-              if (statusToView == "all") {
-                console.log("noteStatus = " + noteStatus);
-                console.log("Added to all list");
-                $("#note-list").append(formattedTask);
-                myCount++;
-              } else if (statusToView === "done") {
+              // if (statusToView == "all") {
+              //   console.log("noteStatus = " + noteStatus);
+              //   console.log("Added to all list");
+              //   $("#note-list").append(formattedTask);
+              //   taskCount++;
+              // } else if (statusToView === "done") {
+              if (statusToView === "done") {
                 if (noteStatus == "Done") {
                   console.log("noteStatus = " + noteStatus);
                   console.log("Added to done list");
                   $("#note-list").append(formattedTask);
                   // $("body").append(formattedTask);
-                  myCount++;
+                  taskCount++;
                 }
               } else if (statusToView === "not-done") {
                 if (noteStatus == "Incomplete") {
                   console.log("noteStatus = " + noteStatus);
                   console.log("Added to incomplete list");
                   $("#note-list").append(formattedTask);
-                  myCount++;
+                  taskCount++;
                 }
-              }
-              // } else {
-              //   console.log("noteStatus = " + noteStatus);
-              //   console.log("Added to all list");
-              //   $("#note-list").append(formattedTask);
               // }
+              } else {
+                console.log("noteStatus = " + noteStatus);
+                console.log("Added to all list");
+                $("#note-list").append(formattedTask);
+                taskCount++;
+              }
               //$("body").append(JSON.stringify(allNotesArray[i]));
               
             };
-            $("#note-list").prepend(`Found ${myCount} task(s).`);
+            $("#note-list").prepend(`Found ${taskCount} task(s).`);
+
           });
           
           // $("#note-list").empty();
@@ -267,8 +347,16 @@
           // let aPTag = "<p>This is a paragraph tag.</>"
           // .html, .append or .prepend
           // $("body").append(aPTag);
-        });
 
+          // gather list of tasks' buttons
+
+
+        });
+        // deleteButtons.click(() => {
+        //   alert(event.srcElement.id + ", " + event.srcElement.className + ", " + event.srcElement.name);
+        //   // alert(event.srcElement.className);
+        //   // alert(event.srcElement.name);
+        // });
         // $.post("http://localhost:3000/markComplete", objectToSend, (dataToGet) => {
         //   console.log(`Server says ${dataToGet.markedComplete}`);
         // });

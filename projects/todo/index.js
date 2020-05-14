@@ -137,8 +137,8 @@ app.post("/deleteNote", (req, res) => {
   for (let i = 0; i < data.notes.length; i++) {
     let currentNote = data.notes[i];
     let currentNoteID = currentNote.create_date + currentNote.author;
-
-    if (node === currentNoteID) {
+    
+    if (noteID === currentNoteID) {
       data.notes.splice(i, 1);
 
       // save data to file
@@ -204,7 +204,7 @@ app.post("/updateNote", (req, res) => {
 });
 
 
-// route for deleting a specific note
+// route for updating a specific note
 app.post("/markComplete", (req, res) => {
   let noteToComplete = req.body;
 
