@@ -188,7 +188,6 @@ app.post("/updateNote", (req, res) => {
       const dataToSend = {
         updatedStatus: 0
       }
-
       return;
     } else {
       continue;
