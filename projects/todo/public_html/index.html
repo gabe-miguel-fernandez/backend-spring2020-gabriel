@@ -8,10 +8,6 @@
     <meta name="description" content="The To Do app page" />
     <meta name="author" content="Gabriel Fernandez" />
 
-    <link rel="stylesheet" type="text/css" href="styles/reset.css">
-    <link rel="stylesheet" type="text/css" href="styles/all.min.css">
-    <link rel="stylesheet" type="text/css" href="styles/styles.css">
-
     <style>
 
       body {
@@ -144,14 +140,15 @@
         height: 3px;
       }
 
-      #modifyNote > #taskBtn {
+      #modifyNote > .taskBtn {
         font-weight: bold;
-        width: 100px;
+        width: 90px;
       }
 
       #modifyNote > #updateNoteText {
         font-size: x-large;
-        width: 90%;
+        margin: 5px;
+        width: 98%;
       }
 
     </style>
@@ -160,14 +157,14 @@
     <script
       src="https://code.jquery.com/jquery-3.5.0.min.js"
       integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ="
-      crossorigin="anonymous"
-    ></script>
+      crossorigin="anonymous">
+    </script>
   </head>
 
   <body>
     <header>
       <div id="header-title">
-        <h2>TO DO LIST</h1>
+        <h2>TO DO LIST</h2>
       </div>
       <div id="header-filter">
         <div id="header-filter-label">
@@ -190,7 +187,7 @@
     <section id="new-note">
       <div id="newNote">
         <input type="submit" class="taskBtn" onclick="addTask(newNoteText.value)" value="New Note">
-        <input type="text" id="newNoteText" value="Enter text for new task here.">
+        <input type="text" id="newNoteText" onfocus="this.value=''" value="Enter text for new task here.">
       </div>
       <hr>
     </section>
@@ -199,101 +196,103 @@
 
     <script>
         function deleteTask(tstamp) {
-          console.log(tstamp);
+
           let objectToDelete = {
             author: "Nick",
             create_date: tstamp
           };
-          console.log(objectToDelete);
+
           $.post("http://localhost:3000/deleteNote", objectToDelete, (dataToGet) => {
             console.log(`Server says ${dataToGet}`);
           });
           const noteDate = new Date(tstamp);
           createdDate = noteDate.toLocaleDateString();
-          // alert("delete - found item id = " + tstamp);
           
-          $("#message-list").prepend(`<p>Deleted task that was created on ${createdDate}. Click one of the above filter buttons to see current To Do list.</p>`);
+          $("#message-list").prepend(`<p>Deleted task created on ${createdDate}. Click one of the above filter buttons to see current To Do list.</p>`);
           $("#note-list").empty();
           showTasksByStatus("not-done");
         }
 
         function doneTask(tstamp) {
-          console.log(tstamp);
+
           let objectToMarkComplete = {
             author: "Nick",
             create_date: tstamp
           };
-          console.log(objectToMarkComplete);
+
           $.post("http://localhost:3000/markComplete", objectToMarkComplete, (dataToGet) => {
             console.log(`Server says ${dataToGet}`);
           });
           const noteDate = new Date(tstamp);
           createdDate = noteDate.toLocaleDateString();
+          $("#message-list").prepend(`<p>Marked task created on ${createdDate} as completed.</p>`);
           $("#note-list").empty();
-          $("#message-list").prepend(`<p>Marked task that was created on ${createdDate} as completed. Click one of the above filter buttons to see current To Do list.</p>`);
           showTasksByStatus("done");
         }
 
+        function cancelUpdate() {
+          $("#message-list").prepend(`<p>Cancelled editing task.</p>`);
+          $("#new-note").show();
+          $("#note-list").empty();
+          showTasksByStatus("not-done");
+        }
+
         function editTask(tstamp) {
-          // alert("edit - found item timestamp = " + tstamp);
+          alert("edit - found item timestamp = " + tstamp);
           $("#new-note").hide();
           $("#note-list").empty();
 
           let formattedTask = 
           `<section id="modify-note">
             <div id="modifyNote">
-              <input type="submit" class="taskBtn" tstamp="${tstamp}" onclick="updateTask(${tstamp}, updateNoteText.value)" value="Edit Note">
-              <input type="text" id="updateNoteText" value="Enter new text for existing task here.">
+              <input type="text" id="updateNoteText" value="Enter new text for existing task here."><br>
+              <input type="submit" class="taskBtn" tstamp="${tstamp}" onclick="updateTask(${tstamp}, updateNoteText.value)" value="Save Change">
+              <input type="submit" class="taskBtn" tstamp="${tstamp}" onclick="cancelUpdate()" value="Cancel Change">
             </div>
           </section>`;
           $("#note-list").append(formattedTask);
         }
 
         function updateTask(tstamp, modifiedNote) {
-          // alert("id = " + tstamp + ", new text = " + modifiedNote);
-          console.log(tstamp);
-          console.log(modifiedNote);
+          alert("id = " + tstamp + ", new text = " + modifiedNote);
+
           let ts = new Date(tstamp);
           let objectToUpdate = {
             author: "Nick",
             create_date: tstamp,
             updated_note: modifiedNote
           };
-          console.log(objectToUpdate);
-          // alert(objectToUpdate);
+
           $.post("http://localhost:3000/updateNote", objectToUpdate, (dataToGet) => {
             console.log(`Server says ${dataToGet.updatedStatus}`);
           });
-          $("#message-list").prepend(`<p>Modified text for task that was created on ${ts.toLocaleDateString()}.</p>`);
+          $("#message-list").prepend(`<p>Modified text for task created on ${ts.toLocaleDateString()}.</p>`);
           $("#new-note").show();
           $("#note-list").empty();
           showTasksByStatus("not-done");
         }
 
         function addTask(textTask) {
-          // alert(`add task ${textTask}`);
+
           let objectToAdd = {
             author: "Nick",
             note: textTask
           };
-          console.log(objectToAdd);
+
           $.post("http://localhost:3000/newNote", objectToAdd, (dataToGet) => {
             console.log(`Server says ${dataToGet}`);
           });
-          $("#message-list").prepend(`<p>Added new task. Click one of the above filter buttons to see current To Do list.</p>`);
+          $("#message-list").prepend(`<p>Added new task.</p>`);
           let infoText = "Enter text for new task here.";
           $("#newNoteText").prop("value", `${infoText}`);
+          $("#note-list").empty();
+          showTasksByStatus("not-done");
         }
 
         function showTasksByStatus(statusToView) {
-          // alert("show task by status = " + statusToView);
 
           $.post("http://localhost:3000/readNotes", {}, (dataToGet) => {
             allNotesArray = dataToGet.notes;
-
-            console.log("Requested notes data.");
-            console.log("type of = " + typeof allNotesArray);
-            console.log("count of array = " + allNotesArray.length);
 
             $("#note-list").empty();
 
@@ -302,16 +301,16 @@
             for (let i = 0; i < allNotesArray.length; i++) {
               
               let ts = new Date(allNotesArray[i].create_date);
-              let myNote = allNotesArray[i];
               let tstamp = allNotesArray[i].create_date;
               let user = allNotesArray[i].author;
-              let deleteInfo = tstamp + "," + user;
               let noteStatus = (allNotesArray[i].completed_status ? "Done" : "Incomplete");
+              let disableBtn = (allNotesArray[i].completed_status ? "disabled" : "");
+
               let formattedTask = 
               `<div class="note" id="${tstamp}">
                 <div class="note-buttons">
-                  <button id="${tstamp}" author="${user}" class="taskBtn" name="doneBtn" value="Done" onClick="doneTask(${tstamp});">Done</button><br>
-                  <button id="${tstamp}" author="${user}" class="taskBtn" name="doneBtn" value="Edit" onClick="editTask(${user});">Edit</button><br>
+                  <button id="${tstamp}" author="${user}" class="taskBtn" name="doneBtn" value="Done" ${disableBtn} onClick="doneTask(${tstamp});">Done</button><br>
+                  <button id="${tstamp}" author="${user}" class="taskBtn" name="doneBtn" value="Edit" ${disableBtn} onClick="editTask(${tstamp});">Edit</button><br>
                   <button id="${tstamp}" author="${user}" class="taskBtn" name="doneBtn" value="Delete" onClick="deleteTask(${tstamp});">Delete</button>
                 </div>
                 <div class="note-data">
@@ -341,14 +340,14 @@
               }
             };
 
-            let itemStatus;
+            let itemStatus = "";
 
             if (statusToView === "not-done") {
               itemStatus = "Incomplete";
             } else if (statusToView === "done") {
               itemStatus = "Completed";
             } else {
-              itemStatus = "all";
+              itemStatus = "total";
             }
             $("#note-list").prepend(`<p>Found ${taskCount} ${itemStatus} task(s).</p>`);
           });
@@ -356,101 +355,15 @@
 
       $(document).ready(() => {
 
-        // let objectToSend = {
-        //   // updated_note: "Do something completely new",
-        //   author: "Nick",
-        //   create_date: 1588990377480
-        // };
-
         console.log("STATUS: document loaded.")
 
         let filterButtons = $(":button.filterBtn");
         console.log(filterButtons);
 
         filterButtons.click(() => {
-          // alert("id = " + event.srcElement.id + ", class = " + event.srcElement.className);
           let statusToView = event.srcElement.id;
-          // get any existing notes/tasks
-          let allNotesArray;          
-
-          $.post("http://localhost:3000/readNotes", {}, (dataToGet) => {
-            allNotesArray = dataToGet.notes;
-
-            console.log("Requested notes data.");
-            console.log("type of = " + typeof allNotesArray);
-            console.log("count of array = " + allNotesArray.length);
-
-            $("#note-list").empty();
-
-            let taskCount = 0;
-
-            for (let i = 0; i < allNotesArray.length; i++) {
-              
-              let ts = new Date(allNotesArray[i].create_date);
-              let myNote = allNotesArray[i];
-              let tstamp = allNotesArray[i].create_date;
-              let user = allNotesArray[i].author;
-              let deleteInfo = tstamp + "," + user;
-              let noteStatus = (allNotesArray[i].completed_status ? "Done" : "Incomplete");
-              let formattedTask = 
-              `<div class="note" id="${tstamp}">
-                <div class="note-buttons">
-                  <button id="${tstamp}" author="${user}" class="taskBtn" name="done" value="Done" onClick="doneTask(${tstamp});">Done</button><br>
-                  <button id="${tstamp}" author="${user}" class="taskBtn" name="edit" value="Edit" onClick="editTask(${tstamp});">Edit</button><br>
-                  <button id="${tstamp}" author="${user}" class="taskBtn" name="delete" value="Delete" onClick="deleteTask(${tstamp});">Delete</button>
-                </div>
-                <div class="note-data">
-                  <div class="note-text">
-                    <p>${allNotesArray[i].note}</p>
-                  </div>
-                  <div class="note-timestamp">
-                    <p><b>Date Created: </b>${ts.toLocaleString()} (STATUS: ${noteStatus})</p>
-                  </div>
-                </div>
-              </div>
-              <hr>`;
-              
-              if (statusToView === "done") {
-                if (noteStatus == "Done") {
-                  $("#note-list").append(formattedTask);
-                  taskCount++;
-                }
-              } else if (statusToView === "not-done") {
-                if (noteStatus == "Incomplete") {
-                  $("#note-list").append(formattedTask);
-                  taskCount++;
-                }
-              } else {
-                $("#note-list").append(formattedTask);
-                taskCount++;
-              }
-              
-            };
-            $("#note-list").prepend(`<p>Found ${taskCount} task(s).</p>`);
-
-          });
+          showTasksByStatus(statusToView);
         });
-
-        // deleteButtons.click(() => {
-        //   alert(event.srcElement.id + ", " + event.srcElement.className + ", " + event.srcElement.name);
-        // });
-
-        // $.post("http://localhost:3000/markComplete", objectToSend, (dataToGet) => {
-        //   console.log(`Server says ${dataToGet.markedComplete}`);
-        // });
-
-        // $.post("http://localhost:3000/newNote", objectToSend, (dataToGet) => {
-        //   console.log(dataToGet);
-        // });
-
-        // $.post("http://localhost:3000/readNotes", {}, (dataToGet) => {
-        //   let allNotesArray = dataToGet.notes;
-        //   console.log(allNotesArray);
-        // });
-
-        // $.post("http://localhost:3000/updateNote", objectToSend, (dataToGet) => {
-        //   console.log(`Server says ${dataToGet.updatedStatus}`);
-        // });
 
       });
     </script>

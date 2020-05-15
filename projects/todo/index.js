@@ -19,6 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // setting up saved file
 // bonus feature: different people have different notes
 const filename = "./users/default_user.json";
+
 let data = {
   notes: [],
 };
@@ -51,7 +52,6 @@ app.use("/", express.static("public_html/"));
     }
     Object to receive from front-end for /readNotes
     {
-
     }
     Object to send to front-end for /readNotes
     {
@@ -118,12 +118,9 @@ app.post("/newNote", (request, response) => {
     saveStatus: 0
   }
 
-  // console.log(data);
-
   response.send(dataToSend);
   // alternative way to send status
   // response.sendStatus(200);
-
 });
 
 // route for updating a specific note
@@ -237,13 +234,6 @@ app.post("/markComplete", (req, res) => {
   res.send(dataToSend);
 
 });
-
-
-
-
-
-
-
 
 // route for reading all notes
 app.post("/readNotes", (req, res) => {
