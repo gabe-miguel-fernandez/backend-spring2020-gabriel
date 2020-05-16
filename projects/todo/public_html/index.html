@@ -50,10 +50,26 @@
 
       #all, #not-done, #done {
         background-color: whitesmoke;
+        box-shadow: 0 4px #999;
         border-radius: 3px;
         font-size: medium;
         font-weight: bold;
         width: 90px;
+      }
+
+      #all:hover, #not-done:hover, #done:hover {
+        background-color: #ffff99;
+        box-shadow: 0 4px #999;
+        border-radius: 3px;
+        font-size: medium;
+        font-weight: bold;
+        width: 90px;
+      }
+
+      #all:active, #not-done:active, #done:active {
+        background-color: yellow;
+        box-shadow: 0 4px #666;
+        transform: translateY(2px);
       }
 
       #message-box {
@@ -71,7 +87,7 @@
 
       #message-list {
         height: 60px;
-        overflow: auto;
+        overflow-y: scroll;
         padding: 0 0 0 20px;
       }
 
@@ -147,6 +163,7 @@
 
       #modifyNote > #updateNoteText {
         font-size: x-large;
+        color: gray;
         margin: 5px;
         width: 98%;
       }
@@ -186,7 +203,7 @@
     </section>
     <section id="new-note">
       <div id="newNote">
-        <input type="submit" class="taskBtn" onclick="addTask(newNoteText.value)" value="New Note">
+        <input type="submit" id="newNoteBtn" class="taskBtn" onclick="addTask(newNoteText.value)" value="New Note">
         <input type="text" id="newNoteText" onfocus="this.value=''" value="Enter text for new task here.">
       </div>
       <hr>
@@ -245,7 +262,7 @@
           let formattedTask = 
           `<section id="modify-note">
             <div id="modifyNote">
-              <input type="text" id="updateNoteText" value="Enter new text for existing task here."><br>
+              <input type="text" id="updateNoteText" onfocus="this.value=''" value="Enter new text for existing task here."><br>
               <input type="submit" class="taskBtn" tstamp="${tstamp}" onclick="updateTask(${tstamp}, updateNoteText.value)" value="Save Change">
               <input type="submit" class="taskBtn" tstamp="${tstamp}" onclick="cancelUpdate()" value="Cancel Change">
             </div>

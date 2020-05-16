@@ -6,7 +6,16 @@ My "To Do List" project is influenced by the Microsoft To Do app (https://www.mi
 
 APPEARANCE
 
+The "To Do List" page has a simple design that is divided into five different sections: 
+(1) A title bar that contains buttons to display tasks according to their status, e.g., "Incomplete," "Complete," or "All."
+(2) A message box that displays informational messages about any task that was modified or added.
+(3) A "new note" section where a user can enter text for a new note.
+(4) A task list that contains existing tasks depending upon how the user wants to filter those tasks.
+(5) An "edit note" section where a user can modify an existing note's text.
+
 APPEARANCE > GENERAL APPEARANCE
+
+
 
 APPEARANCE > LAYOUT
 
