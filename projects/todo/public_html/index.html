@@ -100,18 +100,21 @@
       }
 
       #newNote {
-        background-color: white;
-        border: 1px solid black;
         box-sizing: border-box;
-        margin: 5px 0px 0px 0px;
-        padding: 3px;
+        margin: 0 0 0 5px;
+        padding: 3px 0 0 0;
+      }
+
+      #newNoteBtn, #newNoteCancelBtn {
+        width: 150px;
       }
 
       #newNoteText {
-        border: 0px solid white;
+        border: 1px solid black;
         color: gray;
         font-size: x-large;
-        width: 80%;
+        margin-bottom: 5px;
+        width: 99%;
       }
 
       .note {
@@ -158,7 +161,14 @@
 
       #modifyNote > .taskBtn {
         font-weight: bold;
-        width: 90px;
+        margin: 0 0 0 5px;
+        width: 95px;
+      }
+
+      #modifyNote > p {
+        font-weight: bold;
+        height: 5px;
+        padding: 0 0 0 8px;
       }
 
       #modifyNote > #updateNoteText {
@@ -203,8 +213,9 @@
     </section>
     <section id="new-note">
       <div id="newNote">
-        <input type="submit" id="newNoteBtn" class="taskBtn" onclick="addTask(newNoteText.value)" value="New Note">
-        <input type="text" id="newNoteText" onfocus="this.value=''" value="Enter text for new task here.">
+        <input type="text" id="newNoteText" onfocus="this.value='';this.style.color='black'" value="Enter text for new task here."><br />
+        <input type="submit" id="newNoteBtn" class="taskBtn" onclick="addTask(newNoteText.value)" value="Add New Note">
+        <input type="submit" id="newNoteCancelBtn" class="taskBtn" onclick="cancelAddTask()" value="Cancel Adding Note">
       </div>
       <hr>
     </section>
@@ -212,6 +223,48 @@
     </section>
 
     <script>
+
+        function addTask(textTask) {
+
+          let objectToAdd = {
+            author: "Nick",
+            note: textTask
+          };
+
+          $.post("http://localhost:3000/newNote", objectToAdd, (dataToGet) => {
+            console.log(`Server says ${dataToGet}`);
+          });
+          $("#message-list").prepend(`<p>Added new task.</p>`);
+          let infoText = "Enter text for new task here.";
+          $("#newNoteText").prop("value", `${infoText}`);
+          $("#newNoteText").css("color", "gray");
+          $("#note-list").empty();
+          showTasksByStatus("not-done");
+        }
+
+        function cancelAddTask() {
+          $("#message-list").prepend(`<p>Cancelled adding task.</p>`);
+          // $("#new-note").show();
+          let infoText = "Enter text for new task here.";
+          $("#newNoteText").css("color", "gray");
+          $("#newNoteText").prop("value", `${infoText}`);
+          $("#note-list").empty();
+          showTasksByStatus("not-done");
+        }
+
+        function cancelUpdate() {
+          $("#message-list").prepend(`<p>Cancelled editing task.</p>`);
+          $("#new-note").show();
+          $("#note-list").empty();
+          showTasksByStatus("not-done");
+        }
+
+        // function changeFontColor() {
+        //   alert("need to change text's color from gray to black.")
+        //   alert(this.value);
+        //   alert(this.color);
+        // }
+
         function deleteTask(tstamp) {
 
           let objectToDelete = {
@@ -247,22 +300,16 @@
           showTasksByStatus("done");
         }
 
-        function cancelUpdate() {
-          $("#message-list").prepend(`<p>Cancelled editing task.</p>`);
-          $("#new-note").show();
-          $("#note-list").empty();
-          showTasksByStatus("not-done");
-        }
-
         function editTask(tstamp) {
-          alert("edit - found item timestamp = " + tstamp);
+          // alert("edit - found item timestamp = " + tstamp);
           $("#new-note").hide();
           $("#note-list").empty();
 
           let formattedTask = 
           `<section id="modify-note">
             <div id="modifyNote">
-              <input type="text" id="updateNoteText" onfocus="this.value=''" value="Enter new text for existing task here."><br>
+              <p>Enter new text for the existing note below:</p>
+              <input type="text" id="updateNoteText" onfocus="this.value='';this.style.color='black'" value="Enter new text for existing task here."><br />
               <input type="submit" class="taskBtn" tstamp="${tstamp}" onclick="updateTask(${tstamp}, updateNoteText.value)" value="Save Change">
               <input type="submit" class="taskBtn" tstamp="${tstamp}" onclick="cancelUpdate()" value="Cancel Change">
             </div>
@@ -271,7 +318,7 @@
         }
 
         function updateTask(tstamp, modifiedNote) {
-          alert("id = " + tstamp + ", new text = " + modifiedNote);
+          // alert("id = " + tstamp + ", new text = " + modifiedNote);
 
           let ts = new Date(tstamp);
           let objectToUpdate = {
@@ -285,23 +332,6 @@
           });
           $("#message-list").prepend(`<p>Modified text for task created on ${ts.toLocaleDateString()}.</p>`);
           $("#new-note").show();
-          $("#note-list").empty();
-          showTasksByStatus("not-done");
-        }
-
-        function addTask(textTask) {
-
-          let objectToAdd = {
-            author: "Nick",
-            note: textTask
-          };
-
-          $.post("http://localhost:3000/newNote", objectToAdd, (dataToGet) => {
-            console.log(`Server says ${dataToGet}`);
-          });
-          $("#message-list").prepend(`<p>Added new task.</p>`);
-          let infoText = "Enter text for new task here.";
-          $("#newNoteText").prop("value", `${infoText}`);
           $("#note-list").empty();
           showTasksByStatus("not-done");
         }
@@ -326,8 +356,8 @@
               let formattedTask = 
               `<div class="note" id="${tstamp}">
                 <div class="note-buttons">
-                  <button id="${tstamp}" author="${user}" class="taskBtn" name="doneBtn" value="Done" ${disableBtn} onClick="doneTask(${tstamp});">Done</button><br>
-                  <button id="${tstamp}" author="${user}" class="taskBtn" name="doneBtn" value="Edit" ${disableBtn} onClick="editTask(${tstamp});">Edit</button><br>
+                  <button id="${tstamp}" author="${user}" class="taskBtn" name="doneBtn" value="Done" ${disableBtn} onClick="doneTask(${tstamp});">Done</button><br />
+                  <button id="${tstamp}" author="${user}" class="taskBtn" name="doneBtn" value="Edit" ${disableBtn} onClick="editTask(${tstamp});">Edit</button><br />
                   <button id="${tstamp}" author="${user}" class="taskBtn" name="doneBtn" value="Delete" onClick="deleteTask(${tstamp});">Delete</button>
                 </div>
                 <div class="note-data">
