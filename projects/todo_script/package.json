@@ -1,0 +1,14 @@
+{
+  "name": "todo_script",
+  "version": "1.0.0",
+  "description": "ToDo converted to MongoDB backend",
+  "main": "todo-database.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Gabriel Fernandez",
+  "license": "ISC",
+  "dependencies": {
+    "mongoose": "^5.9.14"
+  }
+}
