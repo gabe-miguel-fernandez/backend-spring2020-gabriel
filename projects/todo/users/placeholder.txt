@@ -1,0 +1,1 @@
+This placeholder text was created to force git to create the users/ directory. Git doesn't track empty directories. If the users/ directory does not exist, the application will throw an error.
