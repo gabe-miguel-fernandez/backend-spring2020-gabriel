@@ -166,14 +166,14 @@ app.post("/updateNote", (req, res) => {
 
   const noteToUpdateID = req.body.create_date + req.body.author;
 
-  console.log(noteToUpdate);
+  // console.log(noteToUpdate);
 
   for (let i = 0; i < data.notes.length; i++) {
     // referring to object; not copying object
     // TO DO: study "deep copy" vs "shallow copy"
     let currentNote = data.notes[i];
     const currentNoteID = currentNote.create_date + currentNote.author;
-    console.log(i + ": " + currentNote, currentNoteID);
+    // console.log(i + ": " + currentNote, currentNoteID);
 
     if (noteToUpdateID === currentNoteID)  {
       currentNote.note = noteToUpdate.updated_note;
@@ -184,7 +184,8 @@ app.post("/updateNote", (req, res) => {
 
       const dataToSend = {
         updatedStatus: 0
-      }
+      };
+
       return;
     } else {
       continue;
@@ -198,7 +199,6 @@ app.post("/updateNote", (req, res) => {
   res.send(dataToSend);
 
 });
-
 
 // route for updating a specific note
 app.post("/markComplete", (req, res) => {

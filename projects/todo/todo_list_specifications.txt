@@ -2,7 +2,7 @@ TO DO LIST SPECIFICATIONS
 
 OVERVIEW
 
-My "To Do List" project is influenced by the Microsoft To Do app (https://www.microsoft.com/en-us/microsoft-365/microsoft-to-do-list-app) and the traditional yellow writing pad with horizontal lines. I like how the Microsoft To Do app has a plain UI that displays a simple list of tasks. I also like the simplicity of jotting down a "to do" task on a writing pad and then checking it off when it's done. 
+My "To Do List" project is influenced by the Microsoft To Do app (https://www.microsoft.com/en-us/microsoft-365/microsoft-to-do-list-app) and the traditional yellow writing pad with horizontal lines. I like how the Microsoft To Do app has a plain UI that displays a simple list of tasks. I also like the simplicity of jotting down a "to do" task on a traditional yellow writing pad and then checking it off when it's done. Originally I planned to have icons button labels but I then decided that simple text labels are probably clearer for new users to understand.
 
 APPEARANCE
 
@@ -11,42 +11,40 @@ This application's single web page uses web-safe, sans-serif fonts, Arial and He
 APPEARANCE > LAYOUT
 
 The "To Do List" application is a simple, one-page design that is divided into five different sections: 
-(1) A title bar that contains buttons to display tasks according to their status, e.g., all, incomplete/not done, and complete/done.
-(2) A message box that displays informational messages about any task that was modified or added.
-(3) A "new note" section where a user can enter text for a new note.
-(4) A task list that contains existing tasks depending upon how the user wants to filter those tasks.
+(1) A title bar that contains buttons for displaying tasks according to their status, e.g., all, incomplete/not done, and complete/done.
+(2) A message box that displays informational messages about any task that was added, modified or deleted.
+(3) A "new note" section where a user can enter text to add a new note.
+(4) A task list that displays existing tasks that can be filtered by their status.
 (5) An "edit note" section where a user can modify an existing note's text.
 
 FEATURES
 
-This application provides five basic features or actions: (1) Display or list notes; (2) Add or create a note; (3) Change a note's status to complete; (4) Update a note; and (5) Delete a note. A message box displays information messages after a task is added, completed, updated or deleted.
+This application provides five basic features or actions: (1) Display or list notes; (2) Add or create a note; (3) Change a note's status to complete; (4) Update a note; and (5) Delete a note. A message box displays confirmation messages after a task is added, completed, updated or deleted, and if certain actions are cancelled.
 
 FEATURES > DISPLAY TASK LIST
 
-The top section on the web page is a black bar that displays application's name and three buttons, "All," "Not Done," and "Done," that display tasks with the corresponding status. A count of the corresponding tasks found appears at the top of the task list.
-
-
+The top section on the web page is a gray bar that displays the application's name and three buttons, "All," "Not Done," and "Done," which will display tasks with the corresponding status. After the user presses one of those button, a count of the corresponding tasks found appears the top of the resulting task list.
 
 FEATURES > MESSAGE BOX
 
-Below the top section on the web page is the message box that displays a scrollable list of information messages generated after adding, completing, updating or deleting a task.
+Below the top section is the message box in light yellow that displays a scrollable list of any confirmation/informational messages generated after adding, completing, updating or deleting a task, and after cancelling the addition or modification of a task.
 
 FEATURES > ADD NEW TASK
 
-The "Add task" section appears below the message box. This section contains a textbox for a new task's text, and two buttons, one to create a new task (labelled "Add New Note") and the other to cancel the action (labelled "Cancel Adding Note"). The textbox contains grayed text instructing the user to enter text for a new note there. Once the user clicks inside the textbox, those instructions are removed, and the textbox appears empty. If the user presses the "Cancel Adding Note" button, the "Add task" section is restored to its original state, where the textbox displays the grayed instructions. The message box is not changed since no new task was created. If the user enters text in the textbox, that new text appears in black, and then if the "Add New Note" button is clicked, a new note appears in the list of notes, a record of that action is added to the message box and the "Add task" section is reset to its original state.
+The "Add task" section appears below the message box. This section contains a white textbox for a new task's text, and two buttons, one to create a new task (labelled "Add New Note") and the other to cancel the action (labelled "Cancel Adding Note"). The textbox contains grayed text instructing the user to enter text for a new note there. Once the user clicks inside the textbox, those instructions disappear. If the user presses the "Cancel Adding Note" button, the "Add task" section is restored to its original state, where the textbox displays the grayed instructions. The message box will not change since no new task was created. If the user enters text in the now empty textbox, that new text appears in black, and then if the "Add New Note" button is pressed, a new note appears in the list of notes, a confirmation of that action is added to the message box and the "Add task" section is reset to its original state.
 
 FEATURES > TASK 
 
-In the task list, a task is displayed inside a box divided into three sections: (1) buttons, (2) the note's text, and (3) the date and time when the task was created along with its status ("Completed" or "Incomplete"). Each task has three buttons: (1) "Done", (2) "Edit", and (3) "Delete."  Pressing the "Done" button marks the current task as completed, and the task is updated to show only completed tasks. Pressing the "Edit" button displays the "Edit Task" section for that task. Pressing the "Delete" button deletes the current task, and the task list now displays the current list of incomplete tasks. A completed task's "Done" and "Edit" buttons are disabled (i.e., they appear grayed out and inactive). "Delete" is only action available for a completed task which cannot be changed back to incomplete, and its text cannot be modified.
+In the task list, a task is displayed inside a yellow box divided into three sections: (1) buttons, (2) the note's text, and (3) the date and time when the task was created along with its status ("Completed" or "Incomplete"). Each task has three white buttons: (1) "Done", (2) "Edit", and (3) "Delete."  Pressing the "Done" button marks that task as completed, and the task list is updated to display that task's new status. Pressing the "Edit" button displays the "Edit Task" section for that task. Pressing the "Delete" button deletes the current task, and the resulting task list displays one less incomplete task. A completed task's "Done" and "Edit" buttons are disabled (i.e., they appear grayed out and inactive). A completed task cannot be changed back to incomplete, and its text cannot be modified. "Delete" is the only action available to an incomplete task.
 
 FEATURES > MARK TASK AS COMPLETED
 
-In the task list, an incomplete task has an active "Done" button in the box containing that task. When a user click that task's "Done" button, that action is recorded in the message box, the task now has its status = "Completed" and th task list is updated to show only "Completed" tasks including the one just marked "Completed."
+An incomplete task displays an active "Done" button. When a user presses the "Done" button, the message box displays a record of that action, the task's status is changed to "Completed," and the task list is updated to display the "Completed" tasks including the one just marked "Completed."
 
 FEATURES > UPDATE TASK
 
-In the task list, an incomplete task has an active "Edit" button in the box containing that task. When a user clicks that task's "Edit" button, the "Add Task" and task list sections are replaced by the "Edit Task" section.  The textbox contains grayed text instructing the user to enter new text for the existing note there. Once the user clicks inside the textbox, those instructions are removed, and the textbox appears empty. If the user presses the "Cancel Change" button, the "Edit task" section is resplaced with the "Add Note" section and the task list displaying incomplete tasks. The message box displays a record of the cancelled editing task action. If the user enters text in the textbox, that new text appears in black. If the "Save Change" button is pressed, the modified note appears in the list of incomplete notes, a record of that action is added to the message box and the "Add task" section is reset to its original state, and the task list displays incomplete tasks.
+An incomplete task displays an active "Edit" button. When a user presses the "Edit" button, the "Add Task" and task list sections are replaced with the "Edit Task" section.  The textbox contains grayed instructions. When the user clicks inside the textbox, its gray contents disappear. Any text a user types inside the textbox appears in black. If the user presses the "Cancel Change" button, the "Edit task" section is resplaced with the "Add Note" section and the task list displaying incomplete tasks. The message box will display a record of that cancelled action. If the user presses the "Save Change" button, the modified text appears in the corresponding note, a record of that action is added to the message box, the task list is updated with the latest incomplete notes, and the "Edit Task" section is replaced with "Add task" section.
 
 FEATURES > DELETE TASK
 
-In the task list, a task has an active "Delete" button in the box containing that task. When a user click that task's "Delete" button, that action is recorded in the message box the task list is updated to show only "incompleted" tasks. The deleted task will no longer appear in any task list.
+A task has an active "Delete" button. When a user presses the "Delete" button, that action is recorded in the message box, and the task list is updated to show only "Incomplete" tasks. That deleted task no longer appears in any task list.

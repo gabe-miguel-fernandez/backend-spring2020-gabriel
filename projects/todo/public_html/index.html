@@ -17,7 +17,7 @@
 
       header {
         align-items: center;
-        background-color: black;
+        background-color: gray;
         color: white;
         display: flex;
         flex-flow: row;
@@ -26,21 +26,21 @@
       }
 
       #header-title {
-        font-size: x-large;
         flex-flow: row;
+        font-size: x-large;
         padding: 0 0 0 15px;
       }
 
       #header-filter {
+        align-items: stretch;
         display: flex;
         flex-direction: row;
-        align-items: stretch;
       }
 
       #header-filter-label > h3 {
+        font-weight: 300;
         text-align: right;
         font-size: medium;
-        font-weight: 300;
         padding: 8px 8px 0 0;
       }
 
@@ -48,35 +48,43 @@
         padding: 15px 10px 5px 0;
       }
 
+      .btn-group-filter {
+        color: black;
+        font-size: 24px;
+        font-weight: bold;
+        padding: 20px 0 0 0;
+      }
+
       #all, #not-done, #done {
         background-color: whitesmoke;
-        box-shadow: 0 4px #999;
-        border-radius: 3px;
+        border-radius: 6px;
+        box-shadow: 1px 4px 6px black;
         font-size: medium;
         font-weight: bold;
         width: 90px;
       }
 
       #all:hover, #not-done:hover, #done:hover {
-        background-color: #ffff99;
-        box-shadow: 0 4px #999;
+        background-color: white;
         border-radius: 3px;
+        box-shadow: 0 4px #999;
         font-size: medium;
         font-weight: bold;
         width: 90px;
       }
 
       #all:active, #not-done:active, #done:active {
-        background-color: yellow;
+        background-color: black;
         box-shadow: 0 4px #666;
+        color: white;
         transform: translateY(2px);
       }
 
       #message-box {
         background-color: #ffffe0;
+        border: 1px solid black;
         display: flex;
         flex-flow: column;
-        border: 1px solid black;
         margin: 5px 2px 5px 2px;
       }
 
@@ -91,14 +99,6 @@
         padding: 0 0 0 20px;
       }
 
-      .btn-group-filter {
-        border: 1px solid black;
-        color: black;
-        font-size: 24px;
-        font-weight: bold;
-        padding: 20px 0 0 0;
-      }
-
       #newNote {
         box-sizing: border-box;
         margin: 0 0 0 5px;
@@ -106,7 +106,9 @@
       }
 
       #newNoteBtn, #newNoteCancelBtn {
-        width: 150px;
+        font-size: medium;
+        font-weight: bold;
+        width: 140px;
       }
 
       #newNoteText {
@@ -114,13 +116,14 @@
         color: gray;
         font-size: x-large;
         margin-bottom: 5px;
+        padding-left: 10px;
         width: 99%;
       }
 
       .note {
+        border: 3px solid black;
         display: flex;
         flex-direction: row;
-        border: 3px solid black;
       }
 
       .note-buttons {
@@ -160,21 +163,23 @@
       }
 
       #modifyNote > .taskBtn {
+        font-size: medium;
         font-weight: bold;
         margin: 0 0 0 5px;
-        width: 95px;
+        width: 110px;
       }
 
       #modifyNote > p {
         font-weight: bold;
         height: 5px;
-        padding: 0 0 0 8px;
+        padding-left: 8px;
       }
 
       #modifyNote > #updateNoteText {
-        font-size: x-large;
         color: gray;
+        font-size: x-large;
         margin: 5px;
+        padding-left: 10px;
         width: 98%;
       }
 
@@ -225,7 +230,6 @@
     <script>
 
         function addTask(textTask) {
-
           let objectToAdd = {
             author: "Nick",
             note: textTask
@@ -259,14 +263,7 @@
           showTasksByStatus("not-done");
         }
 
-        // function changeFontColor() {
-        //   alert("need to change text's color from gray to black.")
-        //   alert(this.value);
-        //   alert(this.color);
-        // }
-
         function deleteTask(tstamp) {
-
           let objectToDelete = {
             author: "Nick",
             create_date: tstamp
@@ -278,13 +275,12 @@
           const noteDate = new Date(tstamp);
           createdDate = noteDate.toLocaleDateString();
           
-          $("#message-list").prepend(`<p>Deleted task created on ${createdDate}. Click one of the above filter buttons to see current To Do list.</p>`);
+          $("#message-list").prepend(`<p>Deleted task created on ${createdDate}.</p>`);
           $("#note-list").empty();
           showTasksByStatus("not-done");
         }
 
         function doneTask(tstamp) {
-
           let objectToMarkComplete = {
             author: "Nick",
             create_date: tstamp
@@ -301,7 +297,6 @@
         }
 
         function editTask(tstamp) {
-          // alert("edit - found item timestamp = " + tstamp);
           $("#new-note").hide();
           $("#note-list").empty();
 
@@ -318,8 +313,6 @@
         }
 
         function updateTask(tstamp, modifiedNote) {
-          // alert("id = " + tstamp + ", new text = " + modifiedNote);
-
           let ts = new Date(tstamp);
           let objectToUpdate = {
             author: "Nick",
@@ -337,7 +330,6 @@
         }
 
         function showTasksByStatus(statusToView) {
-
           $.post("http://localhost:3000/readNotes", {}, (dataToGet) => {
             allNotesArray = dataToGet.notes;
 
