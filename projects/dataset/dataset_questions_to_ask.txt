@@ -14,3 +14,4 @@ What's do the daily rents distribution in buckets of $100 (i.e., < 100, 100-199,
 
 What are the average (rental) acceptance rates per neighborhood?
 What are the average (rental) acceptance rates in sf?
+which zip code has the most rentals?
