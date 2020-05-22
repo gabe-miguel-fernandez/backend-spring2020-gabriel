@@ -1,0 +1,16 @@
+found: https://www.springboard.com/blog/free-public-data-sets-data-science-project/
+
+which listed AirBnB datasets
+
+http://insideairbnb.com/get-the-data.html which has a 38.5 MB listing file
+
+
+
+Questions:
+
+What are the sf neighborhoods and how airbnb rental units does each neighborhood have?
+
+What's do the daily rents distribution in buckets of $100 (i.e., < 100, 100-199, 200-299, ..) for whole city and each neighborhood?
+
+What are the average (rental) acceptance rates per neighborhood?
+What are the average (rental) acceptance rates in sf?
