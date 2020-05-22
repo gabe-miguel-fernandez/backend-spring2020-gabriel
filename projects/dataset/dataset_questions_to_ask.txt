@@ -8,10 +8,21 @@ http://insideairbnb.com/get-the-data.html which has a 38.5 MB listing file
 
 Questions:
 
-What are the sf neighborhoods and how airbnb rental units does each neighborhood have?
+OK - What are the sf neighborhoods and how many airbnb rental units does each neighborhood have?
 
-What's do the daily rents distribution in buckets of $100 (i.e., < 100, 100-199, 200-299, ..) for whole city and each neighborhood?
+--rewrite - What's do the daily rents distribution in buckets of $100 (i.e., < 100, 100-199, 200-299, ..) for whole city and each neighborhood?
+OK  What's the  average daily rents in SF?
 
-What are the average (rental) acceptance rates per neighborhood?
-What are the average (rental) acceptance rates in sf?
-which zip code has the most rentals?
+OK What are the average (rental) acceptance rates per neighborhood?
+NO - What are the average (rental) acceptance rates in sf?
+NO - which zip code has the most rentals?
+
+What's the cost per bedroom based upon daily rent/# of beds
+
+What's the % of hosts who have more than 1 listings? and > 5 listings?
+
+What's the percentage of listings that are private room (as opposed to whole house/apt)?
+
+
+
+
