@@ -17,12 +17,26 @@ OK What are the average (rental) acceptance rates per neighborhood?
 NO - What are the average (rental) acceptance rates in sf?
 NO - which zip code has the most rentals?
 
-What's the cost per bedroom based upon daily rent/# of beds
+OK - What's the cost per bedroom based upon daily rent/# of beds
 
-What's the % of hosts who have more than 1 listings? and > 5 listings?
+OK - What's the % of hosts who have more than 1 listings? and > 5 listings?
 
 What's the percentage of listings that are private room (as opposed to whole house/apt)?
 
 
+// dataset column mapping
+
+col a/1, id
+col j/10, host_id
+col o/15, host_acceptance_rate
+col y/25, neighbourhood_cleansed
+col aa/27, city
+col ac/29, zipcode
+col aj/36, property_type
+col ak/37, room_type
+col am/39, bathrooms
+col an/40, bedrooms
+col ao/41, beds
+col ar/44, price
 
 
